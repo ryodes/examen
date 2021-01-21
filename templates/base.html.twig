@@ -10,6 +10,12 @@
     </head>
     <body>
         {% include "nav.html.twig" %}
+        <br>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success col-3" role="alert" style="text-align: center; margin: auto;">
+                {{message | raw}}
+            </div>
+        {% endfor %}
         <div class="container">
             {% block body %}{% endblock %}
         </div>

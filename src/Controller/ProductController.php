@@ -42,6 +42,7 @@ class ProductController extends AbstractController
             $entityManager->persist($product);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Product add with success !');
             return $this->redirectToRoute('product_index');
         }
 
@@ -73,6 +74,7 @@ class ProductController extends AbstractController
             $product->setSlug($slugger->slug($product->getName()));
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', 'product modified with success !');
             return $this->redirectToRoute('product_index');
         }
 
@@ -93,6 +95,7 @@ class ProductController extends AbstractController
             $entityManager->flush();
         }
 
+        $this->addFlash('success', 'product deleted !');
         return $this->redirectToRoute('product_index');
     }
 }
