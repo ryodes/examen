@@ -35,14 +35,9 @@ class Category
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category_id", orphanRemoval=true)
-     */
-    private $products;
-
-    /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category", orphanRemoval=true)
      */
-    private $ignoreClass;
+    private $products;
 
     public function __construct()
     {
@@ -107,7 +102,7 @@ class Category
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
-            $product->setCategoryId($this);
+            $product->setCategory($this);
         }
 
         return $this;
@@ -117,8 +112,8 @@ class Category
     {
         if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
-            if ($product->getCategoryId() === $this) {
-                $product->setCategoryId(null);
+            if ($product->getCategory() === $this) {
+                $product->setCategory(null);
             }
         }
 
