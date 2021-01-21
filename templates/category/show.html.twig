@@ -29,6 +29,8 @@
     <a class="btn btn-primary" href="{{ path('category_index') }}">back to list</a>
 
     <a class ="btn btn-secondary" href="{{ path('category_edit', {'id': category.id}) }}">edit</a>
+
+    <a class ="btn btn-info" href="{{ path('category_product', {'id': category.id}) }}">products</a>
     <hr>
 
     {{ include('category/_delete_form.html.twig') }}
