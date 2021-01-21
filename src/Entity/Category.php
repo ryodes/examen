@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,22 @@ class Category
      * @ORM\Column(type="string", length=255)
      */
     private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category_id", orphanRemoval=true)
+     */
+    private $products;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category", orphanRemoval=true)
+     */
+    private $ignoreClass;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+        $this->ignoreClass = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +87,66 @@ class Category
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setCategoryId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getCategoryId() === $this) {
+                $product->setCategoryId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getIgnoreClass(): Collection
+    {
+        return $this->ignoreClass;
+    }
+
+    public function addIgnoreClass(Product $ignoreClass): self
+    {
+        if (!$this->ignoreClass->contains($ignoreClass)) {
+            $this->ignoreClass[] = $ignoreClass;
+            $ignoreClass->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoreClass(Product $ignoreClass): self
+    {
+        if ($this->ignoreClass->removeElement($ignoreClass)) {
+            // set the owning side to null (unless already changed)
+            if ($ignoreClass->getCategory() === $this) {
+                $ignoreClass->setCategory(null);
+            }
+        }
 
         return $this;
     }

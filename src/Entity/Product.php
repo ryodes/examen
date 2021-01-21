@@ -33,9 +33,15 @@ class Product
     private $image;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
     private $price;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="ignoreClass")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
 
     public function getId(): ?int
     {
@@ -78,14 +84,26 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): ?string
     {
         return $this->price;
     }
 
-    public function setPrice(int $price): self
+    public function setPrice(string $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
