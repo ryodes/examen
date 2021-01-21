@@ -91,6 +91,10 @@ class Category
         return $this;
     }
 
+    public function __toString(){
+        return $this->name;
+    }
+
     /**
      * @return Collection|Product[]
      */
@@ -115,36 +119,6 @@ class Category
             // set the owning side to null (unless already changed)
             if ($product->getCategoryId() === $this) {
                 $product->setCategoryId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Product[]
-     */
-    public function getIgnoreClass(): Collection
-    {
-        return $this->ignoreClass;
-    }
-
-    public function addIgnoreClass(Product $ignoreClass): self
-    {
-        if (!$this->ignoreClass->contains($ignoreClass)) {
-            $this->ignoreClass[] = $ignoreClass;
-            $ignoreClass->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIgnoreClass(Product $ignoreClass): self
-    {
-        if ($this->ignoreClass->removeElement($ignoreClass)) {
-            // set the owning side to null (unless already changed)
-            if ($ignoreClass->getCategory() === $this) {
-                $ignoreClass->setCategory(null);
             }
         }
 
